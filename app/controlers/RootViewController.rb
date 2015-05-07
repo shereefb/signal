@@ -16,7 +16,6 @@ class RootViewController < UIViewController
 
 
     self.view.addSubview @label1
-    self.view.addSubview @label2
-    
+    self.view.addSubview @label2    
   end
 end
