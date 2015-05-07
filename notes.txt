@@ -3,3 +3,9 @@ Gesture table has a table with items (useful for petitions)
 Beers uses a webview for signing petitions
 Locations has a different kind of table view
 Storyboard customs has a small form and passes data around
+
+
+Todo:
+Remove parse from vendor
+Remove comments from app delegate
+Update name, developer, and meta data
