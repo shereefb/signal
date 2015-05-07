@@ -15,9 +15,10 @@ class RootViewController < UIViewController
     @label2.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height / 2) - 225)
 
 
-    # self.view.addSubview @label1
-    # self.view.addSubview @label2
-    
+    self.view.addSubview @label1
+    self.view.addSubview @label2
+
+    #TODO: Check if we have persisted email first
     show_form
     
   end
@@ -72,11 +73,24 @@ class RootViewController < UIViewController
       @form_controller = Formotion::FormController.alloc.initWithForm(@form)
       @form_controller.form.on_submit do |form|
         form.active_row && form.active_row.text_field.resignFirstResponder
-        alert = UIAlertView.alloc.init
-        alert.title = "@form.render"
-        alert.message = @form.render.to_s
-        alert.addButtonWithTitle("OK")
-        alert.show
+        self.dismissViewControllerAnimated(true, completion:lambda {})
+        
+        #TODO: Persist data
+        
+        BW::UIAlertView.new({
+          title: 'Thanks!',
+          message: "We just sent you an email to #{@form.render[:email]}. Go get it to confirm your adress.",
+          buttons: ['OK'],
+          cancel_button_index: 0
+        }) do |alert|
+            puts 'They want more!'
+        end.show
+        
+        # alert = UIAlertView.alloc.init
+        #         alert.title = "@form.render"
+        #         alert.message = @form.render.to_s
+        #         alert.addButtonWithTitle("OK")
+        #         alert.show
       end
 
     @form_controller.navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemSave, target:self, action:'submit')
