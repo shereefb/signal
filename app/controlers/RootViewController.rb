@@ -1,33 +1,44 @@
 class RootViewController < UIViewController
   def viewDidLoad
     super
-    
+       
     self.view.backgroundColor = UIColor.grayColor
-    
-    @label1 = UILabel.alloc.initWithFrame(CGRectZero)
-    @label1.text = "Welcome to SumOfUs mobile."
-    @label1.sizeToFit
-    @label1.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height / 2) - 250)
-
-    @label2 = UILabel.alloc.initWithFrame(CGRectZero)
-    @label2.text = "Enter your email address:"
-    @label2.sizeToFit
-    @label2.center = CGPointMake(self.view.frame.size.width / 2, (self.view.frame.size.height / 2) - 225)
-
-
-    self.view.addSubview @label1
-    self.view.addSubview @label2
+    self.title = "Campaigns"
+    @table = UITableView.alloc.initWithFrame(self.view.bounds)
+    @table.autoresizingMask = UIViewAutoresizingFlexibleHeight
+    @table.dataSource = self
+    @data = []
 
     #TODO: Check if we have persisted email first
-    show_form
-    
+    show_form    
     load_petitions
     
+  end
+  
+  def tableView(tableView, numberOfRowsInSection: section)
+      @data.count
+  end
+  
+  def tableView(tableView, cellForRowAtIndexPath: indexPath)
+    @reuseIdentifier ||= "CELL_IDENTIFIER"
+
+    cell = tableView.dequeueReusableCellWithIdentifier(@reuseIdentifier)
+    cell ||= UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault,reuseIdentifier:@reuseIdentifier)
+    
+    cell.textLabel.text = @data[indexPath.row]["title"]
+    
+    AFMotion::Image.get(@data[indexPath.row]["image_url"]) do |result|
+        cell.imageView.image = result.object
+    end
+
+    cell
   end
   
   def load_petitions
     AFMotion::JSON.get("http://localhost:3000/petitions/index.json") do |response|
           p response.body.to_str
+          @data = response.object       
+          self.view.addSubview(@table)
     end
   end
   
