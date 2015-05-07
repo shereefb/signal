@@ -26,7 +26,7 @@ class RootViewController < UIViewController
   end
   
   def load_petitions
-    AFMotion::Json.get("http://localhost:3000/petitions/index.json") do |response|
+    AFMotion::JSON.get("http://localhost:3000/petitions/index.json") do |response|
           p response.body.to_str
     end
   end
