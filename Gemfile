@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 gem 'rake'
 gem 'formotion'
-gem "bubble-wrap", "~> 1.8.0"
+gem 'bubble-wrap'
+gem 'afmotion'
+
 
 # Add your dependencies here:

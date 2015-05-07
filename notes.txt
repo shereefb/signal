@@ -9,3 +9,22 @@ Todo:
 Remove parse from vendor
 Remove comments from app delegate
 Update name, developer, and meta data
+
+
+
+
+-----------------------
+CEL's AK Shared Instance:
+
+https://act.engagementlab.org/dash/home/
+
+Your user credentials:
+Shereef
+pwd: changeme321.
+
+API Documentation: https://act.engagementlab.org/docs/manual/api/rest/
+
+API Credentials:
+AK_API_HOST = 'engagementlab.actionkit.com'
+AK_API_USER = 'api_dude'
+AK_API_PASSWORD = 't69<t9b{Kd={24N}P'

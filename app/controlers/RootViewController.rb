@@ -21,6 +21,14 @@ class RootViewController < UIViewController
     #TODO: Check if we have persisted email first
     show_form
     
+    load_petitions
+    
+  end
+  
+  def load_petitions
+    AFMotion::Json.get("http://localhost:3000/petitions/index.json") do |response|
+          p response.body.to_str
+    end
   end
   
   def show_form
