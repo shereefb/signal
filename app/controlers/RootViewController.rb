@@ -7,6 +7,7 @@ class RootViewController < UIViewController
     @table = UITableView.alloc.initWithFrame(self.view.bounds)
     @table.autoresizingMask = UIViewAutoresizingFlexibleHeight
     @table.dataSource = self
+    @table.delegate = self
     @data = []
 
     #TODO: Check if we have persisted email first
@@ -24,14 +25,46 @@ class RootViewController < UIViewController
 
     cell = tableView.dequeueReusableCellWithIdentifier(@reuseIdentifier)
     cell ||= UITableViewCell.alloc.initWithStyle(UITableViewCellStyleDefault,reuseIdentifier:@reuseIdentifier)
-    
-    cell.textLabel.text = @data[indexPath.row]["title"]
+
+    cell.imageView.image = UIImage.imageNamed("placeholder.jpg")
     
     AFMotion::Image.get(@data[indexPath.row]["image_url"]) do |result|
         cell.imageView.image = result.object
     end
+    
+    cell.textLabel.numberOfLines = 0; 
+    cell.textLabel.lineBreakMode = UILineBreakModeWordWrap
+    cell.textLabel.text = @data[indexPath.row]["title"]
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
 
     cell
+  end
+  
+  def tableView(tableView, didSelectRowAtIndexPath:indexPath)
+    tableView.deselectRowAtIndexPath(indexPath, animated: true)
+
+    # alert = UIAlertView.alloc.init
+    # alert.message = "#{@data[indexPath.row]} tapped!"
+    # alert.addButtonWithTitle "OK"
+    # alert.show
+    
+    # letter = @data[indexPath.row]["title"]
+    # controller = UIViewController.alloc.initWithNibName(nil, bundle:nil)
+    # controller.view.backgroundColor = UIColor.whiteColor
+    # controller.title = letter
+    # label = UILabel.alloc.initWithFrame(CGRectZero)
+    # label.text = letter
+    # label.sizeToFit
+    # label.center = [controller.view.frame.size.width / 2,
+    # controller.view.frame.size.height / 2]
+    # controller.view.addSubview(label)
+    # self.navigationController.pushViewController(controller, animated:true)
+
+    letter = @data[indexPath.row]["title"]
+    controller = CampaignViewController.alloc.initWithNibName(nil, bundle:nil)
+    controller.campaign = @data[indexPath.row]
+    self.navigationController.pushViewController(controller, animated:true)
+    
   end
   
   def load_petitions
