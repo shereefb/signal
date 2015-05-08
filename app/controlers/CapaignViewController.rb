@@ -10,6 +10,7 @@ class CampaignViewController < UIViewController
     self.view.loadRequest(
       NSURLRequest.requestWithURL(NSURL.URLWithString(@campaign["signing_url"]))
     )
+    self.view.stringByEvaluatingJavaScriptFromString("alret('hi')")
     
   end
 end

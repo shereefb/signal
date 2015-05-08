@@ -10,8 +10,8 @@ class RootViewController < UIViewController
     @table.delegate = self
     @data = []
 
-    #TODO: Check if we have persisted email first
-    show_form    
+    @defaults = NSUserDefaults.standardUserDefaults
+    show_form if @defaults[:email].nil?
     load_petitions
     
   end
@@ -42,24 +42,6 @@ class RootViewController < UIViewController
   
   def tableView(tableView, didSelectRowAtIndexPath:indexPath)
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
-
-    # alert = UIAlertView.alloc.init
-    # alert.message = "#{@data[indexPath.row]} tapped!"
-    # alert.addButtonWithTitle "OK"
-    # alert.show
-    
-    # letter = @data[indexPath.row]["title"]
-    # controller = UIViewController.alloc.initWithNibName(nil, bundle:nil)
-    # controller.view.backgroundColor = UIColor.whiteColor
-    # controller.title = letter
-    # label = UILabel.alloc.initWithFrame(CGRectZero)
-    # label.text = letter
-    # label.sizeToFit
-    # label.center = [controller.view.frame.size.width / 2,
-    # controller.view.frame.size.height / 2]
-    # controller.view.addSubview(label)
-    # self.navigationController.pushViewController(controller, animated:true)
-
     letter = @data[indexPath.row]["title"]
     controller = CampaignViewController.alloc.initWithNibName(nil, bundle:nil)
     controller.campaign = @data[indexPath.row]
@@ -78,6 +60,7 @@ class RootViewController < UIViewController
   def show_form
     
     @form = Formotion::Form.new({
+          persist_as: :settings,
           title: "SomeOfUs",
           sections: [{
             title: "Welcome, let's get started!",
@@ -127,7 +110,8 @@ class RootViewController < UIViewController
         form.active_row && form.active_row.text_field.resignFirstResponder
         self.dismissViewControllerAnimated(true, completion:lambda {})
         
-        #TODO: Persist data
+        #TODO: Send data to server
+        @defaults[:email]= @form.render[:email]
         
         BW::UIAlertView.new({
           title: 'Thanks!',
